@@ -3,7 +3,9 @@ from typing import List
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "postgresql+asyncpg://projectalpha_user:projectalpha_pass@localhost:5432/projectalpha"
+    DATABASE_URL: str = (
+        "postgresql+asyncpg://projectalpha_user:projectalpha_pass@localhost:5432/projectalpha"
+    )
     API_HOST: str = "127.0.0.1"
     API_PORT: int = 8000
     DEBUG: bool = True

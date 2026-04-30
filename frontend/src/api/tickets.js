@@ -1,7 +1,7 @@
-import apiClient from './index';
+import apiClient from "./index";
 
 export function getTickets(params = {}) {
-  return apiClient.get('/api/tickets', { params });
+  return apiClient.get("/api/tickets", { params });
 }
 
 export function getTicket(id) {
@@ -9,7 +9,7 @@ export function getTicket(id) {
 }
 
 export function createTicket(data) {
-  return apiClient.post('/api/tickets', data);
+  return apiClient.post("/api/tickets", data);
 }
 
 export function updateTicket(id, data) {

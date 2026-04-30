@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia';
-import { getTags, deleteTag } from '@/api/tags';
+import { defineStore } from "pinia";
+import { getTags, deleteTag } from "@/api/tags";
 
-export const useTagStore = defineStore('tag', {
+export const useTagStore = defineStore("tag", {
   state: () => ({
     tags: [],
     loading: false,

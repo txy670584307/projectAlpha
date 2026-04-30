@@ -1,19 +1,19 @@
 import os
 from dotenv import load_dotenv
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncAttrs, create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.orm import DeclarativeBase
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://projectalpha_user:projectalpha_pass@localhost:5432/projectalpha")
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql+asyncpg://projectalpha_user:projectalpha_pass@localhost:5432/projectalpha",
+)
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 engine = create_async_engine(DATABASE_URL, echo=DEBUG)
 
 async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
-
-
-from sqlalchemy.ext.asyncio import AsyncAttrs
-from sqlalchemy.orm import DeclarativeBase
 
 
 class Base(AsyncAttrs, DeclarativeBase):

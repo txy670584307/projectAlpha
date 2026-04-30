@@ -38,8 +38,14 @@ class TestTicketAPI:
         create_resp = await async_client.post("/api/tickets", json=sample_ticket_data)
         ticket_id = create_resp.json()["id"]
 
-        update_data = {"title": "Updated", "description": "New desc", "tags": ["updated"]}
-        update_resp = await async_client.put(f"/api/tickets/{ticket_id}", json=update_data)
+        update_data = {
+            "title": "Updated",
+            "description": "New desc",
+            "tags": ["updated"],
+        }
+        update_resp = await async_client.put(
+            f"/api/tickets/{ticket_id}", json=update_data
+        )
         assert update_resp.status_code == 200
         assert update_resp.json()["title"] == "Updated"
 
@@ -75,7 +81,9 @@ class TestTicketAPI:
         ticket_id = create_resp.json()["id"]
 
         await async_client.patch(f"/api/tickets/{ticket_id}/complete")
-        uncomplete_resp = await async_client.patch(f"/api/tickets/{ticket_id}/uncomplete")
+        uncomplete_resp = await async_client.patch(
+            f"/api/tickets/{ticket_id}/uncomplete"
+        )
         assert uncomplete_resp.status_code == 200
         assert uncomplete_resp.json()["status"] == "open"
         assert uncomplete_resp.json()["completed_at"] is None
@@ -94,7 +102,9 @@ class TestTicketAPI:
     @pytest.mark.asyncio
     async def test_get_tickets_with_tags_filter(self, async_client):
         await async_client.post("/api/tickets", json={"title": "T1", "tags": ["work"]})
-        await async_client.post("/api/tickets", json={"title": "T2", "tags": ["personal"]})
+        await async_client.post(
+            "/api/tickets", json={"title": "T2", "tags": ["personal"]}
+        )
 
         response = await async_client.get("/api/tickets?tags=work")
         assert response.status_code == 200
@@ -123,7 +133,9 @@ class TestTagAPI:
     @pytest.mark.asyncio
     async def test_get_tag_tickets(self, async_client):
         await async_client.post("/api/tickets", json={"title": "T1", "tags": ["work"]})
-        await async_client.post("/api/tickets", json={"title": "T2", "tags": ["work", "urgent"]})
+        await async_client.post(
+            "/api/tickets", json={"title": "T2", "tags": ["work", "urgent"]}
+        )
 
         response = await async_client.get("/api/tags/work/tickets")
         assert response.status_code == 200

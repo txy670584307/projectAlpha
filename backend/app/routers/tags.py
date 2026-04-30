@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
@@ -19,9 +19,11 @@ async def get_tag_tickets(
     name: str,
     skip: int = Query(0, ge=0, description="跳过记录数"),
     limit: int = Query(20, ge=1, le=100, description="返回记录数"),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
 ):
-    tickets, total = await tag_service.get_tickets_by_tag(db, name, skip=skip, limit=limit)
+    tickets, total = await tag_service.get_tickets_by_tag(
+        db, name, skip=skip, limit=limit
+    )
     return tickets
 
 

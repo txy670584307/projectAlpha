@@ -111,15 +111,23 @@ class TestTicketService:
     @pytest.mark.asyncio
     async def test_search_tickets(self, db_session):
         await ticket_service.create_ticket(db_session, TicketCreate(title="Python Bug"))
-        await ticket_service.create_ticket(db_session, TicketCreate(title="JavaScript Issue"))
+        await ticket_service.create_ticket(
+            db_session, TicketCreate(title="JavaScript Issue")
+        )
         results = await ticket_service.search_tickets(db_session, "Python")
         assert len(results) == 1
         assert "Python" in results[0].title
 
     @pytest.mark.asyncio
     async def test_filter_by_tags(self, db_session):
-        await ticket_service.create_ticket(db_session, TicketCreate(title="T1", tags=["work"]))
-        await ticket_service.create_ticket(db_session, TicketCreate(title="T2", tags=["personal"]))
-        await ticket_service.create_ticket(db_session, TicketCreate(title="T3", tags=["work", "urgent"]))
+        await ticket_service.create_ticket(
+            db_session, TicketCreate(title="T1", tags=["work"])
+        )
+        await ticket_service.create_ticket(
+            db_session, TicketCreate(title="T2", tags=["personal"])
+        )
+        await ticket_service.create_ticket(
+            db_session, TicketCreate(title="T3", tags=["work", "urgent"])
+        )
         results = await ticket_service.filter_by_tags(db_session, ["work"])
         assert len(results) == 2

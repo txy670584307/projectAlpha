@@ -1,19 +1,35 @@
 <template>
   <div class="ticket-item" :class="{ completed: ticket.status === 'closed' }">
     <div class="ticket-header">
-      <input type="checkbox" :checked="ticket.status === 'closed'" @change="handleToggle" />
+      <input
+        type="checkbox"
+        :checked="ticket.status === 'closed'"
+        @change="handleToggle"
+      />
       <span class="ticket-title">{{ ticket.title }}</span>
     </div>
-    <div v-if="ticket.description" class="ticket-desc">{{ ticket.description }}</div>
+    <div v-if="ticket.description" class="ticket-desc">
+      {{ ticket.description }}
+    </div>
     <div class="ticket-tags">
-      <span v-for="tag in ticket.tags" :key="tag" class="tag-badge">{{ tag }}</span>
+      <span v-for="tag in ticket.tags" :key="tag" class="tag-badge">{{
+        tag
+      }}</span>
     </div>
     <div class="ticket-meta">
       <span class="ticket-time">{{ formatTime(ticket.created_at) }}</span>
     </div>
     <div class="ticket-actions">
-      <button class="btn btn-text btn-sm" @click="$emit('edit', ticket)">编辑</button>
-      <button class="btn btn-text btn-sm" style="color: var(--danger-color)" @click="handleDelete">删除</button>
+      <button class="btn btn-text btn-sm" @click="$emit('edit', ticket)">
+        编辑
+      </button>
+      <button
+        class="btn btn-text btn-sm"
+        style="color: var(--danger-color)"
+        @click="handleDelete"
+      >
+        删除
+      </button>
     </div>
   </div>
 </template>
@@ -23,29 +39,29 @@ const props = defineProps({
   ticket: { type: Object, required: true },
 });
 
-const emit = defineEmits(['edit', 'delete', 'toggle']);
+const emit = defineEmits(["edit", "delete", "toggle"]);
 
 function handleToggle() {
-  if (props.ticket.status === 'closed') {
-    emit('toggle', props.ticket.id, false);
+  if (props.ticket.status === "closed") {
+    emit("toggle", props.ticket.id, false);
   } else {
-    emit('toggle', props.ticket.id, true);
+    emit("toggle", props.ticket.id, true);
   }
 }
 
 function handleDelete() {
-  if (confirm('确定要删除这个 Ticket 吗？')) {
-    emit('delete', props.ticket.id);
+  if (confirm("确定要删除这个 Ticket 吗？")) {
+    emit("delete", props.ticket.id);
   }
 }
 
 function formatTime(dateStr) {
   const date = new Date(dateStr);
-  return date.toLocaleString('zh-CN', {
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
+  return date.toLocaleString("zh-CN", {
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 </script>
@@ -75,7 +91,7 @@ function formatTime(dateStr) {
   margin-bottom: 8px;
 }
 
-.ticket-header input[type='checkbox'] {
+.ticket-header input[type="checkbox"] {
   width: 18px;
   height: 18px;
   cursor: pointer;

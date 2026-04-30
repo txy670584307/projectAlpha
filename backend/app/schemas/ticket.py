@@ -34,7 +34,10 @@ class TicketResponse(TicketBase):
         if v is None:
             return []
         if isinstance(v, list):
-            return [tag if isinstance(tag, str) else getattr(tag, "name", str(tag)) for tag in v]
+            return [
+                tag if isinstance(tag, str) else getattr(tag, "name", str(tag))
+                for tag in v
+            ]
         return []
 
 

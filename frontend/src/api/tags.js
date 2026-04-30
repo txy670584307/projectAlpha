@@ -1,7 +1,7 @@
-import apiClient from './index';
+import apiClient from "./index";
 
 export function getTags() {
-  return apiClient.get('/api/tags');
+  return apiClient.get("/api/tags");
 }
 
 export function getTagTickets(name, params = {}) {

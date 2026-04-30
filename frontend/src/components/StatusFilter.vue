@@ -3,7 +3,10 @@
     <button
       v-for="option in options"
       :key="option.value"
-      :class="['status-btn', { active: ticketStore.statusFilter === option.value }]"
+      :class="[
+        'status-btn',
+        { active: ticketStore.statusFilter === option.value },
+      ]"
       @click="ticketStore.setStatusFilter(option.value)"
     >
       {{ option.label }}
@@ -12,14 +15,14 @@
 </template>
 
 <script setup>
-import { useTicketStore } from '@/stores/ticket';
+import { useTicketStore } from "@/stores/ticket";
 
 const ticketStore = useTicketStore();
 
 const options = [
-  { label: '全部', value: '' },
-  { label: '未完成', value: 'open' },
-  { label: '已完成', value: 'closed' },
+  { label: "全部", value: "" },
+  { label: "未完成", value: "open" },
+  { label: "已完成", value: "closed" },
 ];
 </script>
 

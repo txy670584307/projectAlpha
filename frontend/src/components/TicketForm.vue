@@ -2,18 +2,27 @@
   <div v-if="visible" class="modal-overlay" @click.self="close">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>{{ isEdit ? '编辑 Ticket' : '新建 Ticket' }}</h2>
+        <h2>{{ isEdit ? "编辑 Ticket" : "新建 Ticket" }}</h2>
         <button class="btn btn-text" @click="close">&times;</button>
       </div>
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <label>标题 *</label>
-          <input type="text" v-model="form.title" maxlength="200" required placeholder="输入标题" />
+          <input
+            type="text"
+            v-model="form.title"
+            maxlength="200"
+            required
+            placeholder="输入标题"
+          />
           <span v-if="titleError" class="error-msg">{{ titleError }}</span>
         </div>
         <div class="form-group">
           <label>描述</label>
-          <textarea v-model="form.description" placeholder="输入描述（可选）"></textarea>
+          <textarea
+            v-model="form.description"
+            placeholder="输入描述（可选）"
+          ></textarea>
         </div>
         <div class="form-group">
           <label>标签</label>
@@ -27,15 +36,23 @@
             />
           </div>
           <div class="tag-list">
-            <span v-for="(tag, index) in form.tags" :key="index" class="tag-badge">
+            <span
+              v-for="(tag, index) in form.tags"
+              :key="index"
+              class="tag-badge"
+            >
               {{ tag }}
               <span class="tag-remove" @click="removeTag(index)">&times;</span>
             </span>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-text" @click="close">取消</button>
-          <button type="submit" class="btn btn-primary" :disabled="submitting">{{ submitting ? '提交中...' : '提交' }}</button>
+          <button type="button" class="btn btn-text" @click="close">
+            取消
+          </button>
+          <button type="submit" class="btn btn-primary" :disabled="submitting">
+            {{ submitting ? "提交中..." : "提交" }}
+          </button>
         </div>
       </form>
     </div>
@@ -43,24 +60,24 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue';
-import { useTicketStore } from '@/stores/ticket';
+import { ref, watch, computed } from "vue";
+import { useTicketStore } from "@/stores/ticket";
 
 const props = defineProps({
   ticket: { type: Object, default: null },
   visible: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(["close"]);
 
 const ticketStore = useTicketStore();
-const tagInput = ref('');
+const tagInput = ref("");
 const submitting = ref(false);
-const titleError = ref('');
+const titleError = ref("");
 
 const form = ref({
-  title: '',
-  description: '',
+  title: "",
+  description: "",
   tags: [],
 });
 
@@ -71,13 +88,13 @@ watch(
   (val) => {
     if (val && props.ticket) {
       form.value.title = props.ticket.title;
-      form.value.description = props.ticket.description || '';
+      form.value.description = props.ticket.description || "";
       form.value.tags = [...(props.ticket.tags || [])];
     } else if (val) {
-      form.value = { title: '', description: '', tags: [] };
+      form.value = { title: "", description: "", tags: [] };
     }
-    titleError.value = '';
-  }
+    titleError.value = "";
+  },
 );
 
 function addTag() {
@@ -85,7 +102,7 @@ function addTag() {
   if (tag && !form.value.tags.includes(tag)) {
     form.value.tags.push(tag);
   }
-  tagInput.value = '';
+  tagInput.value = "";
 }
 
 function removeTag(index) {
@@ -94,14 +111,14 @@ function removeTag(index) {
 
 function validate() {
   if (!form.value.title.trim()) {
-    titleError.value = '标题不能为空';
+    titleError.value = "标题不能为空";
     return false;
   }
   if (form.value.title.length > 200) {
-    titleError.value = '标题不能超过 200 个字符';
+    titleError.value = "标题不能超过 200 个字符";
     return false;
   }
-  titleError.value = '';
+  titleError.value = "";
   return true;
 }
 
@@ -122,10 +139,10 @@ async function handleSubmit() {
 }
 
 function close() {
-  form.value = { title: '', description: '', tags: [] };
-  tagInput.value = '';
-  titleError.value = '';
-  emit('close');
+  form.value = { title: "", description: "", tags: [] };
+  tagInput.value = "";
+  titleError.value = "";
+  emit("close");
 }
 </script>
 

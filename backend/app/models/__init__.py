@@ -1,4 +1,3 @@
 # projectAlpha Models
 
-from app.models.ticket import Ticket
-from app.models.tag import Tag, ticket_tags
+__all__ = ["Ticket", "Tag", "ticket_tags"]

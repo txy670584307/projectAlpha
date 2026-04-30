@@ -1,16 +1,23 @@
-import { defineStore } from 'pinia';
-import { getTickets, createTicket, updateTicket, deleteTicket, completeTicket, uncompleteTicket } from '@/api/tickets';
+import { defineStore } from "pinia";
+import {
+  getTickets,
+  createTicket,
+  updateTicket,
+  deleteTicket,
+  completeTicket,
+  uncompleteTicket,
+} from "@/api/tickets";
 
-export const useTicketStore = defineStore('ticket', {
+export const useTicketStore = defineStore("ticket", {
   state: () => ({
     tickets: [],
     total: 0,
     loading: false,
     error: null,
     selectedTags: [],
-    searchKeyword: '',
-    statusFilter: '',
-    sort: 'created_at',
+    searchKeyword: "",
+    statusFilter: "",
+    sort: "created_at",
     page: 1,
     pageSize: 20,
   }),
@@ -120,8 +127,8 @@ export const useTicketStore = defineStore('ticket', {
 
     clearFilters() {
       this.selectedTags = [];
-      this.searchKeyword = '';
-      this.statusFilter = '';
+      this.searchKeyword = "";
+      this.statusFilter = "";
       this.page = 1;
       this.fetchTickets();
     },

@@ -4,7 +4,7 @@ from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
 from app.models.tag import Tag, ticket_tags
 from app.models.ticket import Ticket
-from app.schemas.tag import TagCreate, TagResponse
+from app.schemas.tag import TagResponse
 
 
 async def get_or_create_tag(db: AsyncSession, name: str) -> Tag:
@@ -21,7 +21,7 @@ async def get_or_create_tag(db: AsyncSession, name: str) -> Tag:
 
 async def get_tags(db: AsyncSession) -> List[TagResponse]:
     result = await db.execute(
-        select(Tag, func.count(ticket_tags.c.ticket_id).label('ticket_count'))
+        select(Tag, func.count(ticket_tags.c.ticket_id).label("ticket_count"))
         .outerjoin(ticket_tags, Tag.id == ticket_tags.c.tag_id)
         .group_by(Tag.id)
         .order_by(Tag.name)
@@ -29,11 +29,7 @@ async def get_tags(db: AsyncSession) -> List[TagResponse]:
     rows = result.all()
     tag_responses = []
     for tag, ticket_count in rows:
-        tag_dict = {
-            "id": tag.id,
-            "name": tag.name,
-            "ticket_count": ticket_count
-        }
+        tag_dict = {"id": tag.id, "name": tag.name, "ticket_count": ticket_count}
         tag_responses.append(TagResponse(**tag_dict))
     return tag_responses
 
@@ -56,13 +52,10 @@ async def delete_tag(db: AsyncSession, name: str) -> bool:
 
 
 async def get_tickets_by_tag(
-    db: AsyncSession,
-    tag_name: str,
-    skip: int = 0,
-    limit: int = 20
+    db: AsyncSession, tag_name: str, skip: int = 0, limit: int = 20
 ) -> tuple[List[Ticket], int]:
     tag_name = tag_name.lower().strip()
-    
+
     count_result = await db.execute(
         select(func.count(Ticket.id))
         .join(ticket_tags, Ticket.id == ticket_tags.c.ticket_id)
@@ -70,7 +63,7 @@ async def get_tickets_by_tag(
         .where(Tag.name == tag_name)
     )
     total = count_result.scalar() or 0
-    
+
     result = await db.execute(
         select(Ticket)
         .options(selectinload(Ticket.tags))
@@ -82,5 +75,5 @@ async def get_tickets_by_tag(
         .limit(limit)
     )
     tickets = result.scalars().all()
-    
+
     return tickets, total

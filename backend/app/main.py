@@ -9,7 +9,7 @@ from app.routers import tickets, tags
 
 logging.basicConfig(
     level=getattr(logging, settings.LOG_LEVEL.upper(), logging.INFO),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
 app = FastAPI(
@@ -17,7 +17,7 @@ app = FastAPI(
     description="基于标签分类的 Ticket 管理工具 API",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
 )
 
 app.add_middleware(
@@ -34,10 +34,7 @@ app.include_router(tags.router, prefix="/api", tags=["tags"])
 
 @app.get("/health", tags=["health"])
 async def health_check():
-    return {
-        "status": "healthy",
-        "database": "connected"
-    }
+    return {"status": "healthy", "database": "connected"}
 
 
 @app.get("/", tags=["root"])
@@ -45,5 +42,5 @@ async def root():
     return {
         "message": "Welcome to projectAlpha API",
         "docs": "/docs",
-        "redoc": "/redoc"
+        "redoc": "/redoc",
     }

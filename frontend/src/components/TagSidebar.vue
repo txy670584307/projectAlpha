@@ -7,23 +7,30 @@
       <li
         v-for="tag in tags"
         :key="tag.name"
-        :class="['tag-item', { active: ticketStore.selectedTags.includes(tag.name) }]"
+        :class="[
+          'tag-item',
+          { active: ticketStore.selectedTags.includes(tag.name) },
+        ]"
         @click="ticketStore.toggleTag(tag.name)"
       >
         <span class="tag-name">{{ tag.name }}</span>
         <span class="tag-count">{{ tag.ticket_count || 0 }}</span>
       </li>
     </ul>
-    <button v-if="ticketStore.selectedTags.length > 0" class="btn btn-text btn-sm" @click="ticketStore.clearFilters">
+    <button
+      v-if="ticketStore.selectedTags.length > 0"
+      class="btn btn-text btn-sm"
+      @click="ticketStore.clearFilters"
+    >
       清除筛选
     </button>
   </div>
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
-import { useTagStore } from '@/stores/tag';
-import { useTicketStore } from '@/stores/ticket';
+import { onMounted, computed } from "vue";
+import { useTagStore } from "@/stores/tag";
+import { useTicketStore } from "@/stores/ticket";
 
 const tagStore = useTagStore();
 const ticketStore = useTicketStore();

@@ -46,13 +46,13 @@ class TestTagService:
 
     @pytest.mark.asyncio
     async def test_get_tickets_by_tag(self, db_session):
-        ticket1 = await ticket_service.create_ticket(
+        await ticket_service.create_ticket(
             db_session, TicketCreate(title="T1", tags=["work"])
         )
-        ticket2 = await ticket_service.create_ticket(
+        await ticket_service.create_ticket(
             db_session, TicketCreate(title="T2", tags=["work", "urgent"])
         )
-        ticket3 = await ticket_service.create_ticket(
+        await ticket_service.create_ticket(
             db_session, TicketCreate(title="T3", tags=["personal"])
         )
         tickets, total = await tag_service.get_tickets_by_tag(db_session, "work")

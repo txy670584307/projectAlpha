@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 
 from app.database import Base, get_db
 from app.main import app
-from app.models import ticket, tag
 
 
 TEST_DATABASE_URL = "postgresql+asyncpg://projectalpha_user:projectalpha_pass@localhost:5432/projectalpha_test"
@@ -58,12 +57,10 @@ def sample_ticket_data():
     return {
         "title": "Test Ticket",
         "description": "Test Description",
-        "tags": ["work", "urgent"]
+        "tags": ["work", "urgent"],
     }
 
 
 @pytest.fixture
 def sample_tag_data():
-    return {
-        "name": "test-tag"
-    }
+    return {"name": "test-tag"}

@@ -19,16 +19,16 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useTicketStore } from '@/stores/ticket';
-import TicketItem from './TicketItem.vue';
+import { computed } from "vue";
+import { useTicketStore } from "@/stores/ticket";
+import TicketItem from "./TicketItem.vue";
 
 const ticketStore = useTicketStore();
 const tickets = computed(() => ticketStore.tickets);
 const loading = computed(() => ticketStore.loading);
 const isEmpty = computed(() => ticketStore.isEmpty);
 
-const emit = defineEmits(['edit', 'delete']);
+const emit = defineEmits(["edit", "delete"]);
 
 function handleToggle(id, toComplete) {
   if (toComplete) {

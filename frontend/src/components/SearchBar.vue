@@ -10,8 +10,8 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
-import { useTicketStore } from '@/stores/ticket';
+import { ref, watch, onMounted } from "vue";
+import { useTicketStore } from "@/stores/ticket";
 
 const ticketStore = useTicketStore();
 const localKeyword = ref(ticketStore.searchKeyword);
@@ -28,7 +28,7 @@ watch(
   () => ticketStore.searchKeyword,
   (newVal) => {
     localKeyword.value = newVal;
-  }
+  },
 );
 </script>
 
