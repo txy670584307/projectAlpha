@@ -1,6 +1,6 @@
-from typing import Optional, List
+from typing import Optional, List, Any
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class TicketBase(BaseModel):
@@ -20,14 +20,22 @@ class TicketUpdate(TicketBase):
 
 
 class TicketResponse(TicketBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     status: str
     created_at: datetime
     updated_at: datetime
     completed_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    @field_validator("tags", mode="before")
+    @classmethod
+    def convert_tags(cls, v: Any) -> List[str]:
+        if v is None:
+            return []
+        if isinstance(v, list):
+            return [tag if isinstance(tag, str) else getattr(tag, "name", str(tag)) for tag in v]
+        return []
 
 
 class TicketListResponse(BaseModel):

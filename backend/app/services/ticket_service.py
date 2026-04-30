@@ -1,4 +1,5 @@
 from typing import Optional, List
+from datetime import datetime, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, distinct
 from sqlalchemy.orm import selectinload
@@ -145,8 +146,7 @@ async def complete_ticket(db: AsyncSession, ticket_id: int) -> Optional[TicketRe
     if not ticket:
         return None
     ticket.status = "closed"
-    from datetime import datetime
-    ticket.completed_at = datetime.utcnow()
+    ticket.completed_at = datetime.now()
     await db.commit()
     await db.refresh(ticket)
     return TicketResponse.model_validate(ticket)

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
 
@@ -11,8 +11,7 @@ class TagCreate(TagBase):
 
 
 class TagResponse(TagBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     ticket_count: Optional[int] = Field(0, description="关联的 Ticket 数量")
-
-    class Config:
-        from_attributes = True
