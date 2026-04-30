@@ -14,7 +14,7 @@
         @click="ticketStore.toggleTag(tag.name)"
       >
         <span class="tag-name">{{ tag.name }}</span>
-        <span class="tag-count">{{ tag.ticket_count || 0 }}</span>
+        <span class="tag-count">{{ tag.count || 0 }}</span>
       </li>
     </ul>
     <button
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from "vue";
+import { onMounted, computed, watch } from "vue";
 import { useTagStore } from "@/stores/tag";
 import { useTicketStore } from "@/stores/ticket";
 
@@ -41,6 +41,13 @@ const loading = computed(() => tagStore.loading);
 onMounted(async () => {
   await tagStore.fetchTags();
 });
+
+watch(
+  () => ticketStore.total,
+  async () => {
+    await tagStore.fetchTags();
+  }
+);
 </script>
 
 <style scoped>

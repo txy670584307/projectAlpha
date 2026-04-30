@@ -26,11 +26,22 @@
         </div>
         <div class="form-group">
           <label>标签</label>
+          <div class="existing-tags">
+            <span
+              v-for="tag in existingTags"
+              :key="tag.name"
+              :class="['existing-tag', { selected: form.tags.includes(tag.name) }]"
+              @click="toggleExistingTag(tag.name)"
+            >
+              {{ tag.name }}
+              <span class="existing-tag-count">{{ tag.count }}</span>
+            </span>
+          </div>
           <div class="tag-input-container">
             <input
               type="text"
               v-model="tagInput"
-              placeholder="输入标签后按回车或逗号"
+              placeholder="输入新标签后按回车或逗号"
               @keydown.enter.prevent="addTag"
               @keydown.,.prevent="addTag"
             />
@@ -60,8 +71,9 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onMounted } from "vue";
 import { useTicketStore } from "@/stores/ticket";
+import { useTagStore } from "@/stores/tag";
 
 const props = defineProps({
   ticket: { type: Object, default: null },
@@ -71,6 +83,7 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 
 const ticketStore = useTicketStore();
+const tagStore = useTagStore();
 const tagInput = ref("");
 const submitting = ref(false);
 const titleError = ref("");
@@ -82,6 +95,11 @@ const form = ref({
 });
 
 const isEdit = computed(() => !!props.ticket);
+const existingTags = computed(() => tagStore.tagsWithCount);
+
+onMounted(async () => {
+  await tagStore.fetchTags();
+});
 
 watch(
   () => props.visible,
@@ -97,8 +115,17 @@ watch(
   },
 );
 
+function toggleExistingTag(tagName) {
+  const index = form.value.tags.indexOf(tagName);
+  if (index === -1) {
+    form.value.tags.push(tagName);
+  } else {
+    form.value.tags.splice(index, 1);
+  }
+}
+
 function addTag() {
-  const tag = tagInput.value.trim();
+  const tag = tagInput.value.trim().toLowerCase();
   if (tag && !form.value.tags.includes(tag)) {
     form.value.tags.push(tag);
   }
@@ -158,6 +185,42 @@ function close() {
   font-weight: 500;
 }
 
+.existing-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.existing-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+  background-color: var(--white);
+}
+
+.existing-tag:hover {
+  border-color: var(--primary-color);
+  background-color: #f0f7ff;
+}
+
+.existing-tag.selected {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white);
+}
+
+.existing-tag-count {
+  margin-left: 4px;
+  font-size: 10px;
+  opacity: 0.7;
+}
+
 .tag-input-container {
   margin-bottom: 8px;
 }
@@ -166,6 +229,16 @@ function close() {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+}
+
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 12px;
 }
 
 .tag-remove {
