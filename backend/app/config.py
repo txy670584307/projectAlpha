@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     CORS_ORIGINS: str = "http://localhost:5173,http://127.0.0.1:5173"
     LOG_LEVEL: str = "INFO"
+    LOG_DIR: str = "logs"
+    LOG_MAX_BYTES: int = 10485760
+    LOG_BACKUP_COUNT: int = 5
 
     class Config:
         env_file = os.getenv("ENV_FILE", ".env")
