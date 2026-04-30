@@ -1,73 +1,80 @@
 <template>
-  <div v-if="visible" class="modal-overlay" @click.self="close">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>{{ isEdit ? "编辑 Ticket" : "新建 Ticket" }}</h2>
-        <button class="btn btn-text" @click="close">&times;</button>
-      </div>
-      <form @submit.prevent="handleSubmit">
-        <div class="form-group">
-          <label>标题 *</label>
-          <input
-            type="text"
-            v-model="form.title"
-            maxlength="200"
-            required
-            placeholder="输入标题"
-          />
-          <span v-if="titleError" class="error-msg">{{ titleError }}</span>
+  <Transition name="modal">
+    <div v-if="visible" class="modal-overlay" @click.self="close">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>{{ isEdit ? "编辑 Ticket" : "新建 Ticket" }}</h2>
+          <button class="btn-close" @click="close" aria-label="关闭">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 1L13 13M1 13L13 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
         </div>
-        <div class="form-group">
-          <label>描述</label>
-          <textarea
-            v-model="form.description"
-            placeholder="输入描述（可选）"
-          ></textarea>
-        </div>
-        <div class="form-group">
-          <label>标签</label>
-          <div class="existing-tags">
-            <span
-              v-for="tag in existingTags"
-              :key="tag.name"
-              :class="['existing-tag', { selected: form.tags.includes(tag.name) }]"
-              @click="toggleExistingTag(tag.name)"
-            >
-              {{ tag.name }}
-              <span class="existing-tag-count">{{ tag.count }}</span>
-            </span>
-          </div>
-          <div class="tag-input-container">
+        <form @submit.prevent="handleSubmit">
+          <div class="form-group">
+            <label>标题</label>
             <input
               type="text"
-              v-model="tagInput"
-              placeholder="输入新标签后按回车或逗号"
-              @keydown.enter.prevent="addTag"
-              @keydown.,.prevent="addTag"
+              v-model="form.title"
+              maxlength="200"
+              required
+              placeholder="输入标题"
+              autofocus
             />
+            <span v-if="titleError" class="error-msg">{{ titleError }}</span>
           </div>
-          <div class="tag-list">
-            <span
-              v-for="(tag, index) in form.tags"
-              :key="index"
-              class="tag-badge"
-            >
-              {{ tag }}
-              <span class="tag-remove" @click="removeTag(index)">&times;</span>
-            </span>
+          <div class="form-group">
+            <label>描述</label>
+            <textarea
+              v-model="form.description"
+              placeholder="输入描述（可选）"
+            ></textarea>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-text" @click="close">
-            取消
-          </button>
-          <button type="submit" class="btn btn-primary" :disabled="submitting">
-            {{ submitting ? "提交中..." : "提交" }}
-          </button>
-        </div>
-      </form>
+          <div class="form-group">
+            <label>标签</label>
+            <div class="existing-tags">
+              <span
+                v-for="tag in existingTags"
+                :key="tag.name"
+                :class="['existing-tag', { selected: form.tags.includes(tag.name) }]"
+                @click="toggleExistingTag(tag.name)"
+              >
+                {{ tag.name }}
+                <span class="existing-tag-count">{{ tag.count }}</span>
+              </span>
+            </div>
+            <div class="tag-input-container">
+              <input
+                type="text"
+                v-model="tagInput"
+                placeholder="输入新标签后按回车"
+                @keydown.enter.prevent="addTag"
+                @keydown.,.prevent="addTag"
+              />
+            </div>
+            <div v-if="form.tags.length > 0" class="tag-list">
+              <span
+                v-for="(tag, index) in form.tags"
+                :key="index"
+                class="tag-badge"
+              >
+                {{ tag }}
+                <span class="tag-remove" @click="removeTag(index)">&times;</span>
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="close">
+              取消
+            </button>
+            <button type="submit" class="btn btn-primary" :disabled="submitting">
+              {{ submitting ? "提交中..." : "提交" }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script setup>
@@ -174,83 +181,138 @@ function close() {
 </script>
 
 <style scoped>
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-content {
+  animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all var(--transition-fast);
+}
+
+.btn-close:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+  color: var(--text-primary);
+}
+
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.error-msg {
+  color: var(--danger-color);
+  font-size: 12px;
+  margin-top: 6px;
+  display: block;
 }
 
 .existing-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .existing-tag {
   display: inline-flex;
   align-items: center;
-  padding: 4px 8px;
+  padding: 5px 10px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: 980px;
   cursor: pointer;
-  font-size: 12px;
-  transition: all 0.2s;
-  background-color: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
 }
 
 .existing-tag:hover {
   border-color: var(--primary-color);
-  background-color: #f0f7ff;
+  color: var(--primary-color);
 }
 
 .existing-tag.selected {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
-  color: var(--white);
+  color: #ffffff;
 }
 
 .existing-tag-count {
   margin-left: 4px;
-  font-size: 10px;
+  font-size: 11px;
   opacity: 0.7;
 }
 
 .tag-input-container {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .tag-list {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  margin-top: 8px;
 }
 
 .tag-badge {
   display: inline-flex;
   align-items: center;
-  padding: 4px 8px;
+  padding: 4px 10px;
   background-color: var(--primary-color);
-  color: var(--white);
-  border-radius: 4px;
+  color: #ffffff;
+  border-radius: 980px;
   font-size: 12px;
+  font-weight: 500;
 }
 
 .tag-remove {
   margin-left: 4px;
   cursor: pointer;
-  font-weight: bold;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
 }
 
-.error-msg {
-  color: var(--danger-color);
-  font-size: 12px;
-  margin-top: 4px;
-  display: block;
+.tag-remove:hover {
+  opacity: 1;
 }
 </style>

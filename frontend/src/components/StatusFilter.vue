@@ -1,23 +1,49 @@
 <template>
   <div class="status-filter">
-    <button
-      v-for="option in options"
-      :key="option.value"
-      :class="[
-        'status-btn',
-        { active: ticketStore.statusFilter === option.value },
-      ]"
-      @click="ticketStore.setStatusFilter(option.value)"
-    >
-      {{ option.label }}
-    </button>
+    <div class="segmented-control">
+      <div
+        class="segment-indicator"
+        :style="indicatorStyle"
+      ></div>
+      <button
+        v-for="(option, index) in options"
+        :key="option.value"
+        :class="['segment-btn', { active: ticketStore.statusFilter === option.value }]"
+        @click="ticketStore.setStatusFilter(option.value)"
+        :ref="el => setButtonRef(el, index)"
+      >
+        <span>{{ option.label }}</span>
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed, nextTick } from "vue";
 import { useTicketStore } from "@/stores/ticket";
 
 const ticketStore = useTicketStore();
+const buttonRefs = ref([]);
+const activeIndex = computed(() => {
+  if (ticketStore.statusFilter === "open") return 1;
+  if (ticketStore.statusFilter === "closed") return 2;
+  return 0;
+});
+
+const indicatorStyle = computed(() => {
+  const btn = buttonRefs.value[activeIndex.value];
+  if (!btn) return {};
+  return {
+    width: `${btn.offsetWidth}px`,
+    transform: `translateX(${btn.offsetLeft}px)`,
+  };
+});
+
+function setButtonRef(el, index) {
+  if (el) {
+    buttonRefs.value[index] = el;
+  }
+}
 
 const options = [
   { label: "全部", value: "" },
@@ -28,30 +54,51 @@ const options = [
 
 <style scoped>
 .status-filter {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 }
 
-.status-btn {
-  padding: 8px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  background-color: var(--white);
-  color: var(--text-light);
+.segmented-control {
+  position: relative;
+  display: inline-flex;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 9px;
+  padding: 2px;
+  gap: 0;
+}
+
+.segment-indicator {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  background-color: #ffffff;
+  border-radius: 7px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.segment-btn {
+  position: relative;
+  z-index: 2;
+  padding: 6px 16px;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: var(--transition);
-  font-size: 14px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  border-radius: 7px;
 }
 
-.status-btn:hover {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
+.segment-btn.active {
+  color: var(--text-primary);
 }
 
-.status-btn.active {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-  color: var(--white);
+.segment-btn:hover:not(.active) {
+  color: var(--text-primary);
 }
 </style>

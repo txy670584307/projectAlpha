@@ -1,13 +1,16 @@
 <template>
   <div id="app">
-    <header class="app-header">
-      <h1>projectAlpha</h1>
-      <button class="btn btn-primary" @click="openCreateForm">
-        + 新建 Ticket
-      </button>
-    </header>
     <div class="app-layout">
       <aside class="app-sidebar">
+        <div class="sidebar-header">
+          <h1 class="logo">projectAlpha</h1>
+          <button class="btn btn-primary btn-create" @click="openCreateForm">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 1V13M1 7H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            新建
+          </button>
+        </div>
         <TagSidebar />
       </aside>
       <main class="app-main">
@@ -63,9 +66,31 @@ async function handleDelete(id) {
 </script>
 
 <style scoped>
-.app-header {
+.logo {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.021em;
+  color: var(--text-primary);
+}
+
+.sidebar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.btn-create {
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.btn-create svg {
+  width: 14px;
+  height: 14px;
 }
 </style>

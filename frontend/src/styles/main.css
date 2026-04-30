@@ -1,117 +1,137 @@
 :root {
-  --primary-color: #4a90d9;
-  --primary-hover: #3a7bc8;
-  --success-color: #27ae60;
-  --danger-color: #e74c3c;
-  --warning-color: #f39c12;
-  --text-color: #333;
-  --text-light: #666;
-  --bg-color: #f5f5f5;
-  --white: #ffffff;
-  --border-color: #e0e0e0;
-  --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --radius: 8px;
-  --transition: all 0.2s ease;
+  --primary-color: #0071e3;
+  --primary-hover: #0077ED;
+  --success-color: #30d158;
+  --danger-color: #ff453a;
+  --warning-color: #ff9f0a;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+  --bg-page: #f5f5f7;
+  --bg-surface: rgba(255, 255, 255, 0.8);
+  --bg-elevated: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-light: rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+  --font-mono: "SF Mono", "SF Mono-Medium", "Menlo", monospace;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-size: 16px;
+  letter-spacing: -0.011em;
 }
 
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.47059;
+  font-weight: 400;
 }
 
 #app {
   min-height: 100vh;
 }
 
-.app-header {
-  background-color: var(--primary-color);
-  color: var(--white);
-  padding: 16px 24px;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.app-header h1 {
-  font-size: 24px;
-  font-weight: 600;
-}
-
 .app-layout {
   display: flex;
-  min-height: calc(100vh - 64px);
+  min-height: 100vh;
+  position: relative;
 }
 
 .app-sidebar {
-  width: 260px;
-  background-color: var(--white);
-  border-right: 1px solid var(--border-color);
-  padding: 20px;
+  width: 280px;
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-right: 1px solid var(--border-light);
+  padding: 32px 20px;
   overflow-y: auto;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 10;
 }
 
 .app-main {
   flex: 1;
-  padding: 24px;
-  overflow-y: auto;
+  padding: 40px 48px 80px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 16px;
+  padding: 10px 18px;
   border: none;
-  border-radius: var(--radius);
+  border-radius: 980px;
   font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-sans);
   cursor: pointer;
-  transition: var(--transition);
+  transition: all var(--transition-fast);
   gap: 6px;
+  letter-spacing: -0.01em;
 }
 
 .btn-primary {
   background-color: var(--primary-color);
-  color: var(--white);
+  color: #ffffff;
 }
 
 .btn-primary:hover {
   background-color: var(--primary-hover);
+  transform: scale(1.02);
 }
 
-.btn-success {
-  background-color: var(--success-color);
-  color: var(--white);
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  background-color: rgba(0, 0, 0, 0.06);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .btn-danger {
   background-color: var(--danger-color);
-  color: var(--white);
-}
-
-.btn-danger:hover {
-  opacity: 0.9;
+  color: #ffffff;
 }
 
 .btn-text {
   background: none;
-  color: var(--text-light);
-  padding: 4px 8px;
+  color: var(--text-tertiary);
+  padding: 6px 12px;
+  border-radius: 6px;
 }
 
 .btn-text:hover {
   color: var(--primary-color);
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 113, 227, 0.06);
 }
 
 .btn-sm {
@@ -122,58 +142,86 @@ body {
 input[type="text"],
 textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 16px;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  font-size: 14px;
-  transition: var(--transition);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-family: var(--font-sans);
+  transition: all var(--transition-fast);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  color: var(--text-tertiary);
 }
 
 input[type="text"]:focus,
 textarea:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.2);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
 }
 
 textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 120px;
+  line-height: 1.5;
 }
 
 .tag-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  background-color: #e8f0fe;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background-color: rgba(0, 113, 227, 0.08);
   color: var(--primary-color);
-  border-radius: 12px;
+  border-radius: 980px;
   font-size: 12px;
-  margin: 2px 4px 2px 0;
+  font-weight: 500;
+  margin: 2px 6px 2px 0;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all var(--transition-fast);
+  letter-spacing: -0.01em;
 }
 
 .tag-badge:hover {
   background-color: var(--primary-color);
-  color: var(--white);
+  color: #ffffff;
+  transform: scale(1.05);
 }
 
 .tag-badge.active {
   background-color: var(--primary-color);
-  color: var(--white);
+  color: #ffffff;
 }
 
 .empty-state {
   text-align: center;
-  padding: 48px 24px;
-  color: var(--text-light);
+  padding: 80px 24px;
+  color: var(--text-tertiary);
+}
+
+.empty-state p:first-child {
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  letter-spacing: -0.021em;
+}
+
+.empty-state p:last-child {
+  font-size: 14px;
+  color: var(--text-tertiary);
 }
 
 .loading-spinner {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 48px;
+  padding: 80px;
+  font-size: 14px;
+  color: var(--text-tertiary);
 }
 
 .modal-overlay {
@@ -182,43 +230,64 @@ textarea {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  animation: fadeIn var(--transition-base);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-content {
-  background-color: var(--white);
-  border-radius: var(--radius);
-  padding: 24px;
-  max-width: 500px;
-  width: 90%;
+  background-color: var(--bg-elevated);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  max-width: 520px;
+  width: 92%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
+  animation: slideUp var(--transition-base);
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .modal-header h2 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
+  letter-spacing: -0.021em;
 }
 
 .modal-footer {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-color);
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-light);
 }
 
 @media (max-width: 768px) {
@@ -229,11 +298,13 @@ textarea {
   .app-sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid var(--border-color);
-    padding: 16px;
+    border-bottom: 1px solid var(--border-light);
+    padding: 24px 20px;
+    position: relative;
+    height: auto;
   }
 
   .app-main {
-    padding: 16px;
+    padding: 24px 20px 60px;
   }
 }
